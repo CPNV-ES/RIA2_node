@@ -1,6 +1,14 @@
+import { Storage } from "@google-cloud/storage";
+
 import { BucketManager } from "./../bucket/BucketManager.interface";
 
 export class GCPBucketManager implements BucketManager {
+  storage: Storage;
+
+  constructor() {
+    this.storage = new Storage();
+  }
+
   async createObject(objectUrl: string, filePath?: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
