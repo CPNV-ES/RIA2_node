@@ -10,15 +10,23 @@ export class GCPBucketManager implements BucketManager {
   }
 
   async createObject(objectUrl: string, filePath?: string): Promise<void> {
-    throw new Error("Method not implemented.");
+    const bucketName = objectUrl.split("//")[1];
+    await this.storage.createBucket(bucketName);
   }
 
   async objectExists(objectUrl: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    const bucketName = objectUrl.split("//")[1];
+    const [exists] = await this.storage.bucket(bucketName).exists();
+
+    return exists;
   }
 
-  removeObject(objectUrl: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async removeObject(objectUrl: string): Promise<void> {
+    if (await this.objectExists(objectUrl)) {
+      const bucketName = objectUrl.split("//")[1];
+
+      await this.storage.bucket(bucketName).delete();
+    }
   }
 
   downloadObject(objectUrl: string, destinationUri: string): void {
