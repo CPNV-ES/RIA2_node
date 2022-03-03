@@ -13,7 +13,7 @@ export class GCPBucketManager implements BucketManager {
     // If the bucket didn't exist creates it
     if (!await this.objectExists(objectUrl))
     {
-      const [bucket, apiResponse] = await this.storage.bucket(objectUrl.replace('gs://', '')).create();
+      const [bucket, apiResponse] = await this.storage.bucket(objectUrl.replace(/^gs:\/\//, '')).create();
       // If there is a file create it
       if (filePath) {
         bucket.upload(filePath);
@@ -30,11 +30,18 @@ export class GCPBucketManager implements BucketManager {
   }
 
   async objectExists(objectUrl: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    const bucketName = objectUrl.split("//")[1];
+    const [exists] = await this.storage.bucket(bucketName).exists();
+
+    return exists;
   }
 
-  removeObject(objectUrl: string): void {
-    throw new Error("Method not implemented.");
+  async removeObject(objectUrl: string): Promise<void> {
+    if (await this.objectExists(objectUrl)) {
+      const bucketName = objectUrl.split("//")[1];
+
+      await this.storage.bucket(bucketName).delete();
+    }
   }
 
   downloadObject(objectUrl: string, destinationUri: string): void {

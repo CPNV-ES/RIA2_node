@@ -1,21 +1,33 @@
 import { GCPBucketManager } from "./../gcp/GCPBucketManager";
 import { BucketManager } from "./../bucket/BucketManager.interface";
+import fs from "fs/promises";
 
 let bucketManager: BucketManager;
 
 const domain = "actualit.info";
 const bucketName = "test-bucket";
 const bucketUrl = `gs://${bucketName}.${domain}`;
-const imageName = "";
-const pathToTestFolder = "";
+const imageName = "test.jpg";
+const pathToTestFolder = "./test/";
+const prefixObjectDownloaded = "downloaded";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
+beforeAll(async () => {
+  bucketManager = new GCPBucketManager();
+
+  if (await bucketManager.objectExists(bucketUrl)) {
+    await bucketManager.removeObject(bucketUrl);
+  }
+});
+
 beforeEach(() => {
   bucketManager = new GCPBucketManager();
 });
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-afterEach(async () => {});
+afterEach(async () => {
+  if (await bucketManager.objectExists(bucketUrl)) {
+    await bucketManager.removeObject(bucketUrl);
+  }
+});
 
 describe("CloudStorageBucketManager unit tests", () => {
   test("createObject_CreateNewBucket_Success", async ()=>{
@@ -61,8 +73,23 @@ describe("CloudStorageBucketManager unit tests", () => {
 
   test("DownloadObject_NominalCase_Success", async () => {
     //given
+    const objectUrl = bucketUrl + "//" + imageName;
+    const destinationFullPath =
+      pathToTestFolder + "//" + prefixObjectDownloaded + imageName;
+    await bucketManager.createObject(
+      objectUrl,
+      pathToTestFolder + "//" + imageName,
+    );
+
+    const bucketExists = await bucketManager.objectExists(bucketUrl);
+    expect(bucketExists).toBe(true);
+
     //when
+    await bucketManager.downloadObject(objectUrl, destinationFullPath);
+
     //then
+    const fileExists = fs.stat(destinationFullPath);
+    expect(fileExists).toBeTruthy();
   });
 
   test("IsobjectExists_NominalCase_Success", async () => {
@@ -106,13 +133,40 @@ describe("CloudStorageBucketManager unit tests", () => {
 
   test("RemoveObject_EmptyBucket_Success", async () => {
     //given
+    await bucketManager.createObject(bucketUrl);
+
+    const exists = await bucketManager.objectExists(bucketUrl);
+    expect(exists).toBe(true);
+
     //when
+    await bucketManager.removeObject(bucketUrl);
+
     //then
+    const notExists = await bucketManager.objectExists(bucketUrl);
+    expect(notExists).toBe(false);
   });
 
   test("RemoveObject_NotEmptyBucket_Success", async () => {
     //given
+    const fileName = imageName;
+    const objectUrl = bucketUrl + "/" + imageName;
+    await bucketManager.createObject(bucketUrl);
+    await bucketManager.createObject(
+      objectUrl,
+      pathToTestFolder + "//" + fileName,
+    );
+
+    const bucketExists = await bucketManager.objectExists(bucketUrl);
+    expect(bucketExists).toBe(true);
+
+    const objectExists = await bucketManager.objectExists(objectUrl);
+    expect(objectExists).toBe(true);
+
     //when
+    await bucketManager.removeObject(bucketUrl);
+
     //then
+    const bucketNotExists = await bucketManager.objectExists(bucketUrl);
+    expect(bucketNotExists).toBe(false);
   });
 });
