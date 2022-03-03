@@ -11,7 +11,6 @@ const imageName = "test.jpg";
 const pathToTestFolder = "./test/";
 const prefixObjectDownloaded = "downloaded";
 
-
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 beforeEach(() => {
   bucketManager = new GCPBucketManager();
@@ -45,15 +44,19 @@ describe("CloudStorageBucketManager unit tests", () => {
   test("DownloadObject_NominalCase_Success", async () => {
     //given
     const objectUrl = bucketUrl + "//" + imageName;
-    const destinationFullPath = pathToTestFolder + "//" + prefixObjectDownloaded + imageName;
-    await bucketManager.createObject(objectUrl, pathToTestFolder + "//" + imageName);
+    const destinationFullPath =
+      pathToTestFolder + "//" + prefixObjectDownloaded + imageName;
+    await bucketManager.createObject(
+      objectUrl,
+      pathToTestFolder + "//" + imageName,
+    );
 
     const bucketExists = await bucketManager.objectExists(bucketUrl);
     expect(bucketExists).toBeTruthy;
 
     //when
     await bucketManager.downloadObject(objectUrl, destinationFullPath);
-    
+
     //then
     const fileExists = fs.stat(destinationFullPath);
     expect(fileExists).toBeTruthy;
@@ -97,8 +100,8 @@ describe("CloudStorageBucketManager unit tests", () => {
     //then
     expect(exists).toBe(false);
   });
-  
-  test("RemoveObject_EmptyBucket_Success", async ()=>{
+
+  test("RemoveObject_EmptyBucket_Success", async () => {
     //given
     await bucketManager.createObject(bucketUrl);
 
@@ -118,11 +121,14 @@ describe("CloudStorageBucketManager unit tests", () => {
     const fileName = imageName;
     const objectUrl = bucketUrl + "/" + imageName;
     await bucketManager.createObject(bucketUrl);
-    await bucketManager.createObject(objectUrl, pathToTestFolder + "//" + fileName);
+    await bucketManager.createObject(
+      objectUrl,
+      pathToTestFolder + "//" + fileName,
+    );
 
     const bucketExists = await bucketManager.objectExists(bucketUrl);
     expect(bucketExists).toBeTruthy;
-    
+
     const objectExists = await bucketManager.objectExists(objectUrl);
     expect(objectExists).toBeTruthy;
 
