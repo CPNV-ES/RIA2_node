@@ -1,9 +1,9 @@
 export interface BucketManager {
-  createObject(objectUrl: string, filePath: string): void;
+  createObject(objectUrl: string, filePath?: string): Promise<void>;
 
   objectExists(objectUrl: string): Promise<boolean>;
 
-  removeObject(objectUrl: string): void;
+  removeObject(objectUrl: string): Promise<void>;
 
   downloadObject(objectUrl: string, destinationUri: string): void;
 }
