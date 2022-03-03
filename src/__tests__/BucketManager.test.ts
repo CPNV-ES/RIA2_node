@@ -46,14 +46,14 @@ describe("CloudStorageBucketManager unit tests", () => {
     await bucketManager.createObject(objectUrl, pathToTestFolder + "//" + imageName);
 
     const bucketExists = await bucketManager.objectExists(bucketUrl);
-    expect(bucketExists).toBeTruthy;
+    expect(bucketExists).toBe(true);
 
     //when
     await bucketManager.downloadObject(objectUrl, destinationFullPath);
     
     //then
     const fileExists = fs.stat(destinationFullPath);
-    expect(fileExists).toBeTruthy;
+    expect(fileExists).toBeTruthy();
   });
 
   test("IsObjectExists_NominalCase_Success", async () => {
@@ -100,14 +100,14 @@ describe("CloudStorageBucketManager unit tests", () => {
     await bucketManager.createObject(bucketUrl);
 
     const exists = await bucketManager.objectExists(bucketUrl);
-    expect(exists).toBeTruthy;
+    expect(exists).toBe(true);
 
     //when
     await bucketManager.removeObject(bucketUrl);
 
     //then
     const notExists = await bucketManager.objectExists(bucketUrl);
-    expect(notExists).toBeFalsy;
+    expect(notExists).toBe(false);
   });
 
   test("RemoveObject_NotEmptyBucket_Success", async () => {
@@ -118,16 +118,16 @@ describe("CloudStorageBucketManager unit tests", () => {
     await bucketManager.createObject(objectUrl, pathToTestFolder + "//" + fileName);
 
     const bucketExists = await bucketManager.objectExists(bucketUrl);
-    expect(bucketExists).toBeTruthy;
+    expect(bucketExists).toBe(true);
     
     const objectExists = await bucketManager.objectExists(objectUrl);
-    expect(objectExists).toBeTruthy;
+    expect(objectExists).toBe(true);
 
     //when
     await bucketManager.removeObject(bucketUrl);
 
     //then
     const bucketNotExists = await bucketManager.objectExists(bucketUrl);
-    expect(bucketNotExists).toBeFalsy;
+    expect(bucketNotExists).toBe(false);
   });
 });
