@@ -10,7 +10,23 @@ export class GCPBucketManager implements BucketManager {
   }
 
   async createObject(objectUrl: string, filePath?: string): Promise<void> {
-    throw new Error("Method not implemented.");
+    // If the bucket didn't exist creates it
+    if (!await this.objectExists(objectUrl))
+    {
+      const [bucket, apiResponse] = await this.storage.bucket(objectUrl.replace('gs://', '')).create();
+      // If there is a file create it
+      if (filePath) {
+        bucket.upload(filePath);
+      }
+    }
+    else
+    {
+      // If there is a file create it
+      if (filePath) {
+        const bucket = this.storage.bucket(objectUrl);
+        bucket.upload(filePath);
+      }
+    }
   }
 
   async objectExists(objectUrl: string): Promise<boolean> {
