@@ -17,7 +17,7 @@ export class GCPBucketManager implements BucketManager {
     throw new Error("Method not implemented.");
   }
 
-  removeObject(objectUrl: string): void {
+  removeObject(objectUrl: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
 
