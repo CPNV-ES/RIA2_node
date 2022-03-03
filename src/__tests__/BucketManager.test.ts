@@ -17,8 +17,11 @@ beforeEach(() => {
   bucketManager = new GCPBucketManager();
 });
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-afterEach(async () => {});
+afterEach(async () => {
+  if (await bucketManager.objectExists(bucketUrl)) {
+    await bucketManager.removeObject(bucketUrl);
+  }
+});
 
 describe("CloudStorageBucketManager unit tests", () => {
   test("createObject_CreateNewBucket_Success", async () => {
