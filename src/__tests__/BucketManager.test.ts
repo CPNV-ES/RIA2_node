@@ -11,7 +11,14 @@ const imageName = "test.jpg";
 const pathToTestFolder = "./test/";
 const prefixObjectDownloaded = "downloaded";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
+beforeAll(async () => {
+  bucketManager = new GCPBucketManager();
+
+  if (await bucketManager.objectExists(bucketUrl)) {
+    await bucketManager.removeObject(bucketUrl);
+  }
+});
+
 beforeEach(() => {
   bucketManager = new GCPBucketManager();
 });
