@@ -8,7 +8,7 @@ const domain = "actualit.info";
 const bucketName = "test-bucket";
 const bucketUrl = `gs://${bucketName}.${domain}`;
 const imageName = "test.jpg";
-const pathToTestFolder = "./test/";
+const pathToTestFolder = "images";
 const prefixObjectDownloaded = "downloaded";
 
 beforeAll(async () => {
@@ -51,12 +51,8 @@ describe("CloudStorageBucketManager unit tests", () => {
   test("DownloadObject_NominalCase_Success", async () => {
     //given
     const objectUrl = bucketUrl + "//" + imageName;
-    const destinationFullPath =
-      pathToTestFolder + "//" + prefixObjectDownloaded + imageName;
-    await bucketManager.createObject(
-      objectUrl,
-      pathToTestFolder + "//" + imageName,
-    );
+    const destinationFullPath = pathToTestFolder + "//" + prefixObjectDownloaded + imageName;
+    await bucketManager.createObject( objectUrl, pathToTestFolder + "//" + imageName);
 
     const bucketExists = await bucketManager.objectExists(bucketUrl);
     expect(bucketExists).toBe(true);

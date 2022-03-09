@@ -29,7 +29,13 @@ export class GCPBucketManager implements BucketManager {
     }
   }
 
-  downloadObject(objectUrl: string, destinationUri: string): void {
-    throw new Error("Method not implemented.");
+  async downloadObject(objectUrl: string, destinationUri: string): Promise<void> {
+    const bucketName = objectUrl.split("//")[1];
+    const bucket = await this.storage.bucket(bucketName);
+    const file = bucket.file(objectUrl);
+
+    file.download({
+      destination: destinationUri,
+    });
   }
 }
