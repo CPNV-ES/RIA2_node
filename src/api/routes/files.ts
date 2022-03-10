@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import multer from "multer";
 
+import { GCPBucketManager } from "./../../gcp/GCPBucketManager";
 import { GCPFaceDetectionManager } from "../../gcp/GCPFaceDetectionManager";
 
 const router = express.Router();
@@ -12,6 +13,12 @@ router.post("/", upload.single("file"), async (req: Request, res: Response) => {
       error: "No file uploaded",
     });
   }
+
+  const bucketManager = new GCPBucketManager();
+  const bucketName = req.file.filename;
+
+  await bucketManager.createObject(bucketName);
+  await bucketManager.createObject(bucketName, req.file.path);
 
   const faceDetectionManager = new GCPFaceDetectionManager();
 
