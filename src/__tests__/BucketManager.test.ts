@@ -1,6 +1,7 @@
 import { GCPBucketManager } from "./../gcp/GCPBucketManager";
 import { BucketManager } from "./../bucket/BucketManager.interface";
 import fs from "fs/promises";
+import { TIMEOUT } from "dns";
 
 let bucketManager: BucketManager;
 
@@ -30,22 +31,45 @@ afterEach(async () => {
 });
 
 describe("CloudStorageBucketManager unit tests", () => {
-  test("createObject_CreateNewBucket_Success", async () => {
+  test("createObject_CreateNewBucket_Success", async ()=>{
     //given
+    expect(await bucketManager.objectExists(bucketUrl)).toBeFalsy();
+
     //when
+    await bucketManager.createObject(bucketUrl);
+
     //then
+    expect(await bucketManager.objectExists(bucketUrl)).toBeTruthy();
   });
 
-  test("CreateObject_CreateObjectWithExistingBucket_Success", async () => {
+  test("createObject_createObjectWithExistingBucket_Success", async () => {
     //given
+    const fileName = imageName;
+    const objectUrl = bucketUrl + "/" + imageName;
+    await bucketManager.createObject(bucketUrl);
+
+    expect(await bucketManager.objectExists(bucketUrl)).toBeTruthy();
+    expect(await bucketManager.objectExists(objectUrl)).toBeFalsy();
+
     //when
+    await bucketManager.createObject(objectUrl, pathToTestFolder + "//" + fileName);
+
     //then
+    expect(await bucketManager.objectExists(objectUrl)).toBeTruthy();
   });
 
-  test("CreateObject_CreateObjectBucketNotExist_Success", async () => {
+  test("createObject_createObjectBucketNotExist_Success", async () => {
     //given
+    const fileName = imageName;
+    const objectUrl = bucketUrl + "/" + imageName;
+    expect(await bucketManager.objectExists(bucketUrl)).toBeFalsy();
+    expect(await bucketManager.objectExists(objectUrl)).toBeFalsy();
+
     //when
+    await bucketManager.createObject(objectUrl, pathToTestFolder + "//" + fileName);
+
     //then
+    expect(await bucketManager.objectExists(objectUrl)).toBeTruthy();
   });
 
   test("DownloadObject_NominalCase_Success", async () => {
@@ -65,7 +89,7 @@ describe("CloudStorageBucketManager unit tests", () => {
     expect(fileExists).toBeTruthy();
   });
 
-  test("IsObjectExists_NominalCase_Success", async () => {
+  test("IsobjectExists_NominalCase_Success", async () => {
     //given
     await bucketManager.createObject(bucketUrl);
 
@@ -76,7 +100,7 @@ describe("CloudStorageBucketManager unit tests", () => {
     expect(exists).toBe(true);
   });
 
-  test("IsObjectExists_ObjectNotExistBucket_Success", async () => {
+  test("IsobjectExists_ObjectNotExistBucket_Success", async () => {
     //given
     const notExistingBucketName = "not-existing-bucket";
     const notExistingBucketUrl = `gs://${notExistingBucketName}.${domain}`;
@@ -88,7 +112,7 @@ describe("CloudStorageBucketManager unit tests", () => {
     expect(exists).toBe(false);
   });
 
-  test("IsObjectExists_ObjectNotExistFile_Success", async () => {
+  test("IsobjectExists_ObjectNotExistFile_Success", async () => {
     //given
     const notExistingFileName = "not-existing-file.jpg";
     const notExistingFileUrl = `${bucketUrl}/${notExistingFileName}`;
@@ -141,5 +165,5 @@ describe("CloudStorageBucketManager unit tests", () => {
     //then
     const bucketNotExists = await bucketManager.objectExists(bucketUrl);
     expect(bucketNotExists).toBe(false);
-  });
+  }, 10000000);
 });
