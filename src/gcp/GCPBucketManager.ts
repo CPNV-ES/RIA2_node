@@ -1,6 +1,6 @@
 import { Storage } from "@google-cloud/storage";
 
-import { BucketManager } from "./../bucket/BucketManager.interface";
+import { BucketManager } from "../interfaces/BucketManager.interface";
 
 export class GCPBucketManager implements BucketManager {
   storage: Storage;

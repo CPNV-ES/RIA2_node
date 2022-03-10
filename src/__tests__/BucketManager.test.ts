@@ -1,5 +1,5 @@
 import { GCPBucketManager } from "./../gcp/GCPBucketManager";
-import { BucketManager } from "./../bucket/BucketManager.interface";
+import { BucketManager } from "../interfaces/BucketManager.interface";
 import fs from "fs/promises";
 import { TIMEOUT } from "dns";
 
