@@ -1,6 +1,7 @@
 import { GCPBucketManager } from "./../gcp/GCPBucketManager";
 import { BucketManager } from "./../bucket/BucketManager.interface";
 import fs from "fs/promises";
+import { TIMEOUT } from "dns";
 
 let bucketManager: BucketManager;
 
@@ -35,7 +36,7 @@ describe("CloudStorageBucketManager unit tests", () => {
     expect(await bucketManager.objectExists(bucketUrl)).toBeFalsy();
 
     //when
-    bucketManager.createObject(bucketUrl);
+    await bucketManager.createObject(bucketUrl);
 
     //then
     expect(await bucketManager.objectExists(bucketUrl)).toBeTruthy();
@@ -168,5 +169,5 @@ describe("CloudStorageBucketManager unit tests", () => {
     //then
     const bucketNotExists = await bucketManager.objectExists(bucketUrl);
     expect(bucketNotExists).toBe(false);
-  });
+  }, 10000000);
 });
