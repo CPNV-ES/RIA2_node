@@ -3,7 +3,7 @@ import vision, { ImageAnnotatorClient } from "@google-cloud/vision";
 import { FaceDetectionManager } from "src/interfaces/FaceDetectionManager.interface";
 
 export class GCPFaceDetectionManager implements FaceDetectionManager {
-  client: ImageAnnotatorClient;
+  private client: ImageAnnotatorClient;
 
   constructor() {
     this.client = new vision.ImageAnnotatorClient();
