@@ -9,13 +9,11 @@ export class GCPFaceDetectionManager implements FaceDetectionManager {
     this.client = new vision.ImageAnnotatorClient();
   }
 
-  async detectFaces(imageUrl: string): Promise<any> {
-    const results = await this.client.faceDetection({
-      image: { source: { filename: imageUrl } },
+  async detectFaces(imageUrl: string) {
+    const [results] = await this.client.faceDetection({
+      image: { source: { imageUri: imageUrl } },
     });
-    const faces = results[0].faceAnnotations;
-    const numFaces = faces?.length;
-    console.log(`Found ${numFaces} face${numFaces === 1 ? "" : "s"}.`);
-    return faces;
+
+    return results.faceAnnotations;
   }
 }
