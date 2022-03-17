@@ -5,7 +5,7 @@ import fs from "fs/promises";
 let bucketManager: BucketManager;
 
 const domain = "actualit.info";
-const bucketName = "test-bucket";
+const bucketName = "test-bucket4"; 
 const bucketUrl = `gs://${bucketName}.${domain}`;
 const imageName = "test.jpg";
 const pathToTestFolder = "images";
@@ -86,7 +86,7 @@ describe("CloudStorageBucketManager unit tests", () => {
     //then
     const fileExists = fs.stat(destinationFullPath);
     expect(fileExists).toBeTruthy();
-  });
+  }, 10000000);
 
   test("IsobjectExists_NominalCase_Success", async () => {
     //given
