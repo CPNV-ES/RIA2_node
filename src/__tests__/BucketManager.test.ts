@@ -5,7 +5,7 @@ import fs from "fs/promises";
 let bucketManager: BucketManager;
 
 const domain = "actualit.info";
-const bucketName = "test-bucket"; 
+const bucketName = "test-bucket";
 const bucketUrl = `gs://${bucketName}.${domain}`;
 const imageName = "test.jpg";
 const pathToTestFolder = "images";
