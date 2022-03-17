@@ -63,7 +63,7 @@ export class GCPBucketManager implements BucketManager {
     const bucket = this.storage.bucket(this.getBucketNameFromUrl(objectUrl));
     const file = bucket.file(fileName);
 
-    file.download({
+    await file.download({
       destination: destinationUri,
     });
   }

@@ -86,7 +86,7 @@ describe("CloudStorageBucketManager unit tests", () => {
     //then
     const fileExists = fs.stat(destinationFullPath);
     expect(fileExists).toBeTruthy();
-  });
+  }, 10000000);
 
   test("IsobjectExists_NominalCase_Success", async () => {
     //given
