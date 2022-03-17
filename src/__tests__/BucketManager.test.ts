@@ -1,7 +1,6 @@
 import { GCPBucketManager } from "./../gcp/GCPBucketManager";
 import { BucketManager } from "../interfaces/BucketManager.interface";
 import fs from "fs/promises";
-import { TIMEOUT } from "dns";
 
 let bucketManager: BucketManager;
 
@@ -56,7 +55,7 @@ describe("CloudStorageBucketManager unit tests", () => {
 
     //then
     expect(await bucketManager.objectExists(objectUrl)).toBeTruthy();
-  });
+  }, 10000000);
 
   test("createObject_createObjectBucketNotExist_Success", async () => {
     //given
@@ -66,17 +65,17 @@ describe("CloudStorageBucketManager unit tests", () => {
     expect(await bucketManager.objectExists(objectUrl)).toBeFalsy();
 
     //when
-    await bucketManager.createObject(objectUrl, pathToTestFolder + "//" + fileName);
+    await bucketManager.createObject(objectUrl, pathToTestFolder + "/" + fileName);
 
     //then
     expect(await bucketManager.objectExists(objectUrl)).toBeTruthy();
-  });
+  }, 10000000);
 
   test("DownloadObject_NominalCase_Success", async () => {
     //given
-    const objectUrl = bucketUrl + "//" + imageName;
-    const destinationFullPath = pathToTestFolder + "//" + prefixObjectDownloaded + imageName;
-    await bucketManager.createObject( objectUrl, pathToTestFolder + "//" + imageName);
+    const objectUrl = bucketUrl + "/" + imageName;
+    const destinationFullPath = pathToTestFolder + "/" + prefixObjectDownloaded + imageName;
+    await bucketManager.createObject( objectUrl, pathToTestFolder + "/" + imageName);
 
     const bucketExists = await bucketManager.objectExists(bucketUrl);
     expect(bucketExists).toBe(true);
@@ -150,7 +149,7 @@ describe("CloudStorageBucketManager unit tests", () => {
     await bucketManager.createObject(bucketUrl);
     await bucketManager.createObject(
       objectUrl,
-      pathToTestFolder + "//" + fileName,
+      pathToTestFolder + "/" + fileName,
     );
 
     const bucketExists = await bucketManager.objectExists(bucketUrl);
