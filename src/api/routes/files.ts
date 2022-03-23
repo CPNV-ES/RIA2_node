@@ -16,15 +16,15 @@ router.post("/", upload.single("file"), async (req: Request, res: Response) => {
 
   const bucketManager = new GCPBucketManager();
   const bucketName = req.file.filename;
+  const imageName = req.file.filename;
+  const bucketUrl = `gs://${bucketName}`;
+  const objectUrl = bucketUrl + "/" + imageName;
 
-  await bucketManager.createObject(bucketName);
-  await bucketManager.createObject(bucketName, req.file.path);
+  await bucketManager.createObject(bucketUrl, req.file.path);
 
   const faceDetectionManager = new GCPFaceDetectionManager();
 
-  const result = await faceDetectionManager.detectFaces(
-    "gs://ria2nodejs.actualit.info/alexandre.jpg",
-  );
+  const result = await faceDetectionManager.detectFaces(objectUrl);
 
   res.status(201).json(result);
 });
