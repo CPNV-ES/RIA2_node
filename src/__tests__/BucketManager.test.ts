@@ -10,7 +10,7 @@ const domain = "actualit.info";
 const bucketName = generateBucketName();
 const bucketUrl = `gs://${bucketName}.${domain}`;
 const imageName = "test_face.jpg";
-const pathToTestFolder = "src/__tests__/files";
+const pathToTestFolder = "src/__tests__/fixtures/files";
 const prefixObjectDownloaded = "downloaded";
 
 beforeAll(async () => {
