@@ -27,6 +27,18 @@ afterEach(async () => {
   if (await bucketManager.objectExists(bucketUrl)) {
     await bucketManager.removeObject(bucketUrl);
   }
+
+  const destinationFullPath =
+    pathToTestFolder + "/" + prefixObjectDownloaded + imageName;
+
+  // We need a try catch as the fs API is throwing an exception if the file
+  // does not exist
+  try {
+    if (await fs.stat(destinationFullPath)) {
+      await fs.unlink(destinationFullPath);
+    }
+    // eslint-disable-next-line no-empty
+  } catch (e) {}
 });
 
 describe("CloudStorageBucketManager unit tests", () => {
