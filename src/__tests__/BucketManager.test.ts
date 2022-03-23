@@ -1,11 +1,13 @@
+import fs from "fs/promises";
+
 import { GCPBucketManager } from "./../gcp/GCPBucketManager";
 import { BucketManager } from "../interfaces/BucketManager.interface";
-import fs from "fs/promises";
+import { generateBucketName } from "./fixtures/generateBucketName";
 
 let bucketManager: BucketManager;
 
 const domain = "actualit.info";
-const bucketName = "test-bucket";
+const bucketName = generateBucketName();
 const bucketUrl = `gs://${bucketName}.${domain}`;
 const imageName = "test_face.jpg";
 const pathToTestFolder = "src/__tests__/files";
