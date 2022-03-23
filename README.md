@@ -1,7 +1,25 @@
 # Getting started
 
 ```sh
-yarn install
+$ yarn install
+
+$ cp .env.example .env
+```
+
+Do not forget to change the .env variables
+
+## Running the app
+
+### Start the API
+
+```sh
+yarn start
+```
+
+### Tests
+
+```sh
+yarn test
 ```
 
 # Project management
