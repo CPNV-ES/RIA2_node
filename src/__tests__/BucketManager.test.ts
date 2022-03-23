@@ -7,8 +7,8 @@ let bucketManager: BucketManager;
 const domain = "actualit.info";
 const bucketName = "test-bucket";
 const bucketUrl = `gs://${bucketName}.${domain}`;
-const imageName = "test.jpg";
-const pathToTestFolder = "images";
+const imageName = "test_face.jpg";
+const pathToTestFolder = "src/__tests__/files";
 const prefixObjectDownloaded = "downloaded";
 
 beforeAll(async () => {
