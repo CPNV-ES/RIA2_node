@@ -42,7 +42,7 @@ afterEach(async () => {
 });
 
 describe("CloudStorageBucketManager unit tests", () => {
-  test("createObject_CreateNewBucket_Success", async ()=>{
+  test("createObject_CreateNewBucket_Success", async () => {
     //given
     expect(await bucketManager.objectExists(bucketUrl)).toBeFalsy();
 
@@ -51,7 +51,7 @@ describe("CloudStorageBucketManager unit tests", () => {
 
     //then
     expect(await bucketManager.objectExists(bucketUrl)).toBeTruthy();
-  });
+  }, 10000000);
 
   test("createObject_createObjectWithExistingBucket_Success", async () => {
     //given
@@ -63,7 +63,10 @@ describe("CloudStorageBucketManager unit tests", () => {
     expect(await bucketManager.objectExists(objectUrl)).toBeFalsy();
 
     //when
-    await bucketManager.createObject(objectUrl, pathToTestFolder + "//" + fileName);
+    await bucketManager.createObject(
+      objectUrl,
+      pathToTestFolder + "//" + fileName,
+    );
 
     //then
     expect(await bucketManager.objectExists(objectUrl)).toBeTruthy();
@@ -77,7 +80,10 @@ describe("CloudStorageBucketManager unit tests", () => {
     expect(await bucketManager.objectExists(objectUrl)).toBeFalsy();
 
     //when
-    await bucketManager.createObject(objectUrl, pathToTestFolder + "/" + fileName);
+    await bucketManager.createObject(
+      objectUrl,
+      pathToTestFolder + "/" + fileName,
+    );
 
     //then
     expect(await bucketManager.objectExists(objectUrl)).toBeTruthy();
@@ -86,8 +92,12 @@ describe("CloudStorageBucketManager unit tests", () => {
   test("DownloadObject_NominalCase_Success", async () => {
     //given
     const objectUrl = bucketUrl + "/" + imageName;
-    const destinationFullPath = pathToTestFolder + "/" + prefixObjectDownloaded + imageName;
-    await bucketManager.createObject( objectUrl, pathToTestFolder + "/" + imageName);
+    const destinationFullPath =
+      pathToTestFolder + "/" + prefixObjectDownloaded + imageName;
+    await bucketManager.createObject(
+      objectUrl,
+      pathToTestFolder + "/" + imageName,
+    );
 
     const bucketExists = await bucketManager.objectExists(bucketUrl);
     expect(bucketExists).toBe(true);
@@ -109,7 +119,7 @@ describe("CloudStorageBucketManager unit tests", () => {
 
     //then
     expect(exists).toBe(true);
-  });
+  }, 10000000);
 
   test("IsobjectExists_ObjectNotExistBucket_Success", async () => {
     //given
@@ -121,7 +131,7 @@ describe("CloudStorageBucketManager unit tests", () => {
 
     //then
     expect(exists).toBe(false);
-  });
+  }, 10000000);
 
   test("IsobjectExists_ObjectNotExistFile_Success", async () => {
     //given
@@ -137,7 +147,7 @@ describe("CloudStorageBucketManager unit tests", () => {
 
     //then
     expect(exists).toBe(false);
-  });
+  }, 10000000);
 
   test("RemoveObject_EmptyBucket_Success", async () => {
     //given
@@ -152,7 +162,7 @@ describe("CloudStorageBucketManager unit tests", () => {
     //then
     const notExists = await bucketManager.objectExists(bucketUrl);
     expect(notExists).toBe(false);
-  });
+  }, 10000000);
 
   test("RemoveObject_NotEmptyBucket_Success", async () => {
     //given

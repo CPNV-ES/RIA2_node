@@ -6,9 +6,9 @@ let faceDetectionManager: FaceDetectionManager;
 const bucketManager = new GCPBucketManager();
 
 const domain = "actualit.info";
-const bucketName = "test-bucket";
+const bucketName = "test-bucket-face";
 const imageName = "test_face.jpg";
-const pathToTestFolder = "./files";
+const pathToTestFolder = "src/__tests__/files";
 const bucketUrl = `gs://${bucketName}.${domain}`;
 const imageUrl = `${bucketUrl}//${imageName}`;
 const imagePath = `${pathToTestFolder}//${imageName}`;
@@ -21,7 +21,7 @@ beforeAll(async () => {
   if (!(await bucketManager.objectExists(imageUrl))) {
     await bucketManager.createObject(imageUrl, imagePath);
   }
-});
+}, 10000000);
 
 afterAll(async () => {
   if (await bucketManager.objectExists(imageUrl)) {
@@ -31,12 +31,14 @@ afterAll(async () => {
   if (await bucketManager.objectExists(bucketUrl)) {
     await bucketManager.removeObject(bucketUrl);
   }
+}, 10000000);
+
+beforeEach(async () => {
+  faceDetectionManager = new GCPFaceDetectionManager();
 });
 
 describe("FaceDetectionManager unit tests", () => {
   it("should return a response", async () => {
-    faceDetectionManager = new GCPFaceDetectionManager();
-
     const result = await faceDetectionManager.detectFaces(imageUrl);
 
     expect(result).toBeDefined();
