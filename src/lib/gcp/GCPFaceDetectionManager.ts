@@ -1,6 +1,6 @@
 import vision, { ImageAnnotatorClient } from "@google-cloud/vision";
 
-import { FaceDetectionManager } from "src/interfaces/FaceDetectionManager.interface";
+import { FaceDetectionManager } from "src/lib/interfaces/FaceDetectionManager.interface";
 
 export class GCPFaceDetectionManager implements FaceDetectionManager {
   private client: ImageAnnotatorClient;
