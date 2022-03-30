@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 
-import { GCPBucketManager } from "./../gcp/GCPBucketManager";
-import { BucketManager } from "../interfaces/BucketManager.interface";
+import { GCPBucketManager } from "../GCPBucketManager";
+import { BucketManager } from "../../interfaces/BucketManager.interface";
 import { generateBucketName } from "./fixtures/generateBucketName";
 
 let bucketManager: BucketManager;
@@ -10,7 +10,7 @@ const domain = "actualit.info";
 const bucketName = generateBucketName();
 const bucketUrl = `gs://${bucketName}.${domain}`;
 const imageName = "test_face.jpg";
-const pathToTestFolder = "src/__tests__/fixtures/files";
+const pathToTestFolder = "src/lib/gcp/__tests__/fixtures/files";
 const prefixObjectDownloaded = "downloaded";
 
 beforeAll(async () => {
