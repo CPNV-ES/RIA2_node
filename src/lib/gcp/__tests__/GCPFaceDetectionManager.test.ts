@@ -1,6 +1,6 @@
-import { FaceDetectionManager } from "../interfaces/FaceDetectionManager.interface";
-import { GCPBucketManager } from "../gcp/GCPBucketManager";
-import { GCPFaceDetectionManager } from "../gcp/GCPFaceDetectionManager";
+import { FaceDetectionManager } from "../../interfaces/FaceDetectionManager.interface";
+import { GCPBucketManager } from "../GCPBucketManager";
+import { GCPFaceDetectionManager } from "../../gcp/GCPFaceDetectionManager";
 import { generateBucketName } from "./fixtures/generateBucketName";
 
 let faceDetectionManager: FaceDetectionManager;
@@ -9,7 +9,7 @@ const bucketManager = new GCPBucketManager();
 const domain = "actualit.info";
 const bucketName = generateBucketName();
 const imageName = "test_face.jpg";
-const pathToTestFolder = "src/__tests__/fixtures/files";
+const pathToTestFolder = "src/lib/gcp/__tests__/fixtures/files";
 const bucketUrl = `gs://${bucketName}.${domain}`;
 const imageUrl = `${bucketUrl}//${imageName}`;
 const imagePath = `${pathToTestFolder}//${imageName}`;
