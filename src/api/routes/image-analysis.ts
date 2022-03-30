@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import multer from "multer";
+import { getClientIp } from "request-ip";
 
 import { GCPBucketManager } from "src/lib/gcp/GCPBucketManager";
 import { GCPFaceDetectionManager } from "src/lib/gcp/GCPFaceDetectionManager";
@@ -34,6 +35,9 @@ router.post("/", upload.single("img"), async (req: Request, res: Response) => {
       error: "No file uploaded",
     });
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const ip = getClientIp(req);
 
   const bucketManager = new GCPBucketManager();
   const bucketName = req.file.filename;
