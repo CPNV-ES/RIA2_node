@@ -1,23 +1,23 @@
 import express, { Request, Response } from "express";
 import multer from "multer";
 
-import { GCPBucketManager } from "./../../gcp/GCPBucketManager";
-import { GCPFaceDetectionManager } from "../../gcp/GCPFaceDetectionManager";
+import { GCPBucketManager } from "src/lib/gcp/GCPBucketManager";
+import { GCPFaceDetectionManager } from "src/lib/gcp/GCPFaceDetectionManager";
 
 const router = express.Router();
 const upload = multer({ dest: process.env.FILE_UPLOAD_PATH });
 
 /**
  * @swagger
- * /files:
+ * /image-analysis:
  *   post:
  *     tags:
- *       - files
+ *       - image-analysis
  *     description: Upload a file to the bucket
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: file
+ *       - name: img
  *         description: The file to upload.
  *         in: formData
  *         required: true
@@ -28,7 +28,7 @@ const upload = multer({ dest: process.env.FILE_UPLOAD_PATH });
  *       400:
  *         description: The file was not uploaded.
  */
-router.post("/", upload.single("file"), async (req: Request, res: Response) => {
+router.post("/", upload.single("img"), async (req: Request, res: Response) => {
   if (!req.file) {
     return res.status(400).json({
       error: "No file uploaded",
