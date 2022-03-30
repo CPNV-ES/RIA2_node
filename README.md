@@ -22,6 +22,10 @@ yarn start
 yarn test
 ```
 
+## Swagger
+
+A swagger for the api is avaible on `/api-docs`.
+
 # Project management
 
 ## Branching strategy
