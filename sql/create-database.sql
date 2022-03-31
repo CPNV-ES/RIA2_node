@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `ria2node`.`analyse` ;
 CREATE TABLE IF NOT EXISTS `ria2node`.`analyse` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `image_id` INT NOT NULL,
-  `ip` VARCHAR(255) NULL,
+  `ip` BINARY(4) NULL,
   `created_at` DATETIME NULL,
   `updated_at` DATETIME NULL,
   PRIMARY KEY (`id`),
