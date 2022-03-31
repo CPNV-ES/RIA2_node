@@ -22,6 +22,10 @@ yarn start
 yarn test
 ```
 
+## Swagger
+
+A swagger for the api is avaible on `/api-docs`.
+
 ## Requests
 
 The requests are hosted by hoppscotch, in order for hoppscotch to reach your `localhost` you need to install the browser extension :

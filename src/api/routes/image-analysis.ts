@@ -8,6 +8,27 @@ import { GCPFaceDetectionManager } from "src/lib/gcp/GCPFaceDetectionManager";
 const router = express.Router();
 const upload = multer({ dest: process.env.FILE_UPLOAD_PATH });
 
+/**
+ * @swagger
+ * /image-analysis:
+ *   post:
+ *     tags:
+ *       - image-analysis
+ *     description: Upload a file to the bucket
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: img
+ *         description: The file to upload.
+ *         in: formData
+ *         required: true
+ *         type: file
+ *     responses:
+ *       201:
+ *         description: The file was uploaded.
+ *       400:
+ *         description: The file was not uploaded.
+ */
 router.post("/", upload.single("img"), async (req: Request, res: Response) => {
   if (!req.file) {
     return res.status(400).json({
