@@ -4,7 +4,8 @@ import { getClientIp } from "request-ip";
 
 import { GCPBucketManager } from "src/lib/gcp/GCPBucketManager";
 import { GCPFaceDetectionManager } from "src/lib/gcp/GCPFaceDetectionManager";
-
+import { SqlBuilder } from "src/sql/SqlBuilder";
+import fs from 'fs';
 const router = express.Router();
 const upload = multer({ dest: process.env.FILE_UPLOAD_PATH });
 
@@ -50,6 +51,18 @@ router.post("/", upload.single("img"), async (req: Request, res: Response) => {
   const faceDetectionManager = new GCPFaceDetectionManager();
 
   const result = await faceDetectionManager.detectFaces(objectUrl);
+
+  const saveFaceDetectionResult = new SqlBuilder();
+  const sqlResult = saveFaceDetectionResult.insertFaceDetection(ip, bucketUrl, req.file.path, result);
+  
+  fs.writeFile('./src/sql/'+imageName+'.sql', sqlResult, err => {
+    if (err) {
+      console.error(err)
+      return
+    }
+  })
+  
+  await bucketManager.createObject(bucketUrl, './src/sql/'+imageName+'.sql');
 
   res.status(201).json(result);
 });
