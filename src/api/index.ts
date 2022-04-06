@@ -1,6 +1,7 @@
 import express from "express";
 
-import files from "./routes/files";
+import swagger from "./routes/swagger";
+import imageAnalysis from "./routes/image-analysis";
 
 const app = express();
 
@@ -8,7 +9,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/files", files);
+app.use("/image-analysis", imageAnalysis);
+
+app.use("/api-docs", swagger);
 
 app.use((_, res) => {
   res.status(404).json({

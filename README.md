@@ -22,6 +22,22 @@ yarn start
 yarn test
 ```
 
+## Swagger
+
+A swagger for the api is avaible on `/api-docs`.
+
+## Requests
+
+The requests are hosted by hoppscotch, in order for hoppscotch to reach your `localhost` you need to install the browser extension :
+
+[Chrome](https://chrome.google.com/webstore/detail/hoppscotch-browser-extens/amknoiejhlmhancpahfcfcfhllgkpbld)
+
+[Firefox](https://addons.mozilla.org/en-US/firefox/addon/hoppscotch/)
+
+### Endpoints
+
+[/image-analysis](https://hopp.sh/r/lSwULy1KtRNf)
+
 # Project management
 
 ## Branching strategy
