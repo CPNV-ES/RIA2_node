@@ -14,7 +14,7 @@ const options = {
       version: "1.0.0",
     },
   },
-  apis: ["./src/api/routes/files.ts"],
+  apis: ["./src/api/routes/*.ts"],
 };
 
 // initialize swagger-jsdoc
