@@ -1,11 +1,11 @@
 // TODO mettre dans repertoir lib
 export class SqlBuilder {
 
-    public insertFaceDetection(ip: any, bucketUrl: string, filePath: string, result: any): string {
-      
+    public insertFaceDetection(ip: any, objectUrl: string, fileName: string, hash: string, result: any): string {
+        
         return `
             INSERT INTO \`image\`(\`url\`, \`name\`, \`hash\` ) 
-            VALUES ('${bucketUrl + "/" + filePath}', '${filePath}', '${filePath}');
+            VALUES ('${objectUrl}', '${fileName}', '${hash}');
             
             INSERT INTO \`analysis\` (\`image_id\`, \`ip\`, \`created_at\`, \`updated_at\`) 
             VALUES (LAST_INSERT_ID(), INET_ATON('${ip}'), NOW(), NOW());
@@ -32,23 +32,28 @@ export class SqlBuilder {
             INSERT INTO \`object\` (\`analysis_id\`, \`name\`, \`category\`)
             VALUES (@analysis_id, 'vertices', 'boundingPoly');
 
+            SELECT \`id\` INTO @object_id FROM \`object\` WHERE \`id\` = LAST_INSERT_ID();
+
             ${result[0].boundingPoly.vertices.map((vertice: any) => `
                 INSERT INTO \`attribute\` (\`object_id\`, \`name\`, \`value_type\`, \`value_number\`) 
-                VALUES (LAST_INSERT_ID(), 'vertice-x', 'number', '${vertice.x}');
+                VALUES (@object_id, 'vertice-x', 'number', '${vertice.x}');
 
                 INSERT INTO \`attribute\` (\`object_id\`, \`name\`, \`value_type\`, \`value_number\`) 
-                VALUES ( LAST_INSERT_ID(), 'vertice-y', 'number', '${vertice.y}');      
+                VALUES (@object_id, 'vertice-y', 'number', '${vertice.y}');      
             `).join("")}
+
 
             INSERT INTO \`object\` ( \`analysis_id\`, \`name\`, \`category\`) 
             VALUES ( @analysis_id, 'vertices', 'boundingPoly');   
-
+            
+            SELECT \`id\` INTO @object_id FROM \`object\` WHERE \`id\` = LAST_INSERT_ID();
+        
             ${result[0].fdBoundingPoly.vertices.map((vertice: any) => `
                 INSERT INTO \`attribute\` (\`object_id\`, \`name\`, \`value_type\`, \`value_number\`) 
-                VALUES ( LAST_INSERT_ID(), 'vertice-x', 'number', '${vertice.x}');
+                VALUES ( @object_id, 'vertice-x', 'number', '${vertice.x}');
 
                 INSERT INTO \`attribute\` (\`object_id\`, \`name\`, \`value_type\`, \`value_number\`) 
-                VALUES (LAST_INSERT_ID(), 'vertice-y', 'number', '${vertice.y}');      
+                VALUES (@object_id, 'vertice-y', 'number', '${vertice.y}');      
             `).join("")}        
 
             INSERT INTO \`object\` (\`analysis_id\`, \`name\`, \`category\`) 

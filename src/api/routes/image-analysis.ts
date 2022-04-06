@@ -45,7 +45,8 @@ router.post("/", upload.single("img"), async (req: Request, res: Response) => {
   const imageName = req.file.filename;
   const bucketUrl = `gs://${bucketName}`;
   const objectUrl = bucketUrl + "/" + imageName;
-
+  
+  
   await bucketManager.createObject(bucketUrl, req.file.path);
 
   const faceDetectionManager = new GCPFaceDetectionManager();
@@ -53,8 +54,9 @@ router.post("/", upload.single("img"), async (req: Request, res: Response) => {
   const result = await faceDetectionManager.detectFaces(objectUrl);
 
   const saveFaceDetectionResult = new SqlBuilder();
-  const sqlResult = saveFaceDetectionResult.insertFaceDetection(ip, bucketUrl, req.file.path, result);
-  
+  const sqlResult = saveFaceDetectionResult.insertFaceDetection(ip, objectUrl, req.file.originalname, req.file.filename, result);
+ 
+
   fs.writeFile('./src/sql/'+imageName+'.sql', sqlResult, err => {
     if (err) {
       console.error(err)
