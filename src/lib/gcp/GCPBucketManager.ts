@@ -10,11 +10,15 @@ export class GCPBucketManager implements BucketManager {
   }
 
   async createObject(objectUrl: string, filePath?: string): Promise<void> {
+    //TODO Q1 - line 15 - Good idea to code everything in one line ?
     // If the bucket didn't exist creates it
     if (!(await this.objectExists(this.removeFileNameFromUrl(objectUrl)))) {
       const [bucket, apiResponse] = await this.storage.createBucket(
         this.getBucketNameFromUrl(objectUrl),
       );
+
+      //TODO Q2 - What's happend if bucket wasn't created ?
+      //TODO Q3 - Recommendation (note) for upload method have been followed ?
       // If there is a file create it
       if (filePath) {
         await bucket.upload(filePath || "");
@@ -25,6 +29,8 @@ export class GCPBucketManager implements BucketManager {
       const bucket = this.storage.bucket(this.getBucketNameFromUrl(objectUrl));
       await bucket.upload(filePath || "");
     }
+
+    //TODO Q4 - How to evaluate if the function run correctly ?
   }
 
   async objectExists(objectUrl: string): Promise<boolean> {
